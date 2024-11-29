@@ -26,7 +26,7 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.27.11
+      - image: ghcr.io/procinger/kargo-demo:1.27.14
         livenessProbe:
           exec:
             command:
@@ -53,32 +53,3 @@ spec:
             memory: 128Mi
       imagePullSecrets:
       - name: ghcr-pull-secret
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: curl-app
-  name: curl-app
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: curl-app
-  template:
-    metadata:
-      labels:
-        app: curl-app
-    spec:
-      containers:
-      - command:
-        - /bin/sh
-        - -c
-        - |
-          while true
-          do
-            curl --insecure -L -o /dev/null -s -w %{http_code} http://kargo-demo
-            sleep 5
-          done
-        image: docker.io/curlimages/curl:8.11.0
-        name: curl-app
