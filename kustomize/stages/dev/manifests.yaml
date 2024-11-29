@@ -62,7 +62,7 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.20.2
+      - image: ghcr.io/procinger/kargo-demo:1.20.3
         livenessProbe:
           exec:
             command:
