@@ -14,7 +14,7 @@ spec:
     metadata:
       name: kargo-demo-{{path.basename}}
       annotations:
-        kargo.akuity.io/authorized-stage: kargo-demo:{{{path.basename}}
+        kargo.akuity.io/authorized-stage: kargo-demo:{{path.basename}}
     spec:
       project: default
       source:

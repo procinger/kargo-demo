@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hukmedia Canary Rollout Demo</title>
+<title>Hukmedia Kargo.io Demo</title>
 <style>
 html { color-scheme: light dark; }
 body { background-color: #${COLOR}; margin: auto; display: block; text-align:center;
