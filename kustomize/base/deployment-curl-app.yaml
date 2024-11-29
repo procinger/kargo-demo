@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curl-app
+  labels:
+    app: curl-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl-app
+  template:
+    metadata:
+      labels:
+        app: curl-app
+    spec:
+      containers:
+      - name: curl-app
+        image: docker.io/curlimages/curl:8.9.1
+        command:
+          - /bin/sh
+          - -c
+          - |
+            while true
+            do
+              curl --insecure -L -o /dev/null -s -w %{http_code} http://kargo-demo
+              sleep 5
+            done
