@@ -62,7 +62,7 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.20.1
+      - image: ghcr.io/procinger/kargo-demo:1.20.2
         livenessProbe:
           exec:
             command:
@@ -116,5 +116,5 @@ spec:
             curl --insecure -L -o /dev/null -s -w %{http_code} http://kargo-demo
             sleep 5
           done
-        image: docker.io/curlimages/curl:8.9.1
+        image: docker.io/curlimages/curl:8.11.0
         name: curl-app
