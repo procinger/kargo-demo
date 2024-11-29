@@ -1,0 +1,30 @@
+kind: AnalysisTemplate
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: analysis-http-smoke-test
+spec:
+  metrics:
+  - name: http-smoke-test
+    count: 5
+    interval: 5s
+    failureLimit: 0
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: http-smoke-test
+                image: curlimages/curl:latest
+                command:
+                - /bin/sh
+                - -c
+                - |
+                  (curl --insecure -L -o /dev/null -s -w %{http_code} \
+                  http://kargo-demo.kargo-demo-dev.svc.cluster.local | grep ${HTTP_SUCCESS_CODE}) || (echo "http test failed. expected ${HTTP_SUCCESS_CODE}"; exit 1)
+                imagePullPolicy: IfNotPresent
+                env:
+                - name: HTTP_SUCCESS_CODE
+                  value: "200"
+              restartPolicy: Never
+          backoffLimit: 1

@@ -1,0 +1,59 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: test
+  namespace: kargo-demo
+  annotations:
+    kargo.akuity.io/color: amber
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: kargo-demo
+      sources:
+        direct: false
+        stages:
+          - dev
+  promotionTemplate:
+    spec:
+      steps:
+        - uses: git-clone
+          config:
+            repoURL: https://github.com/procinger/kargo-demo.git
+            checkout:
+              - branch: main
+                path: ./src
+              - branch: stage/test
+                create: true
+                path: ./out
+        - uses: git-clear
+          config:
+            path: ./out
+        - uses: kustomize-set-image
+          as: update-image
+          config:
+            path: ./src/kustomize/base
+            images:
+              - image: ghcr.io/procinger/kargo-demo
+        - uses: kustomize-build
+          config:
+            path: ./src/kustomize/overlays/test
+            outPath: ./out/kustomize/stages/test/manifests.yaml
+        - uses: git-commit
+          as: commit
+          config:
+            path: ./out
+            messageFromSteps:
+              - update-image
+        - uses: git-push
+          config:
+            path: ./out
+            targetBranch: stage/test
+        - uses: argocd-update
+          config:
+            apps:
+              - name: kargo-demo-test
+                namespace: argo-cd
+                sources:
+                  - repoURL: https://github.com/procinger/kargo-demo.git
+                    desiredCommitFromStep: commit

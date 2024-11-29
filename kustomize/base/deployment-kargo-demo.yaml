@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kargo-demo
+  labels:
+    app: kargo-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kargo-demo
+  template:
+    metadata:
+      labels:
+        app: kargo-demo
+    spec:
+      containers:
+      - name: kargo-demo
+        image: ghcr.io/procinger/kargo-demo:1.10.1
+        env:
+          - name: FOO
+            value: BAZ
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "128Mi"
+            cpu: "300m"
+        livenessProbe:
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - "[ -f /run/nginx.pid ] && test -f /proc/$(cat /run/nginx.pid)/exe"
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      imagePullSecrets:
+      - name: ghcr-pull-secret

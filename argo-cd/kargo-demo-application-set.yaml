@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kargo-demo
+  namespace: argo-cd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/procinger/kargo-demo.git
+        revision: main
+        directories:
+          - path: kustomize/overlays/*
+  template:
+    metadata:
+      name: kargo-demo-{{path.basename}}
+      annotations:
+        kargo.akuity.io/authorized-stage: kargo-demo:{{{path.basename}}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/procinger/kargo-demo.git
+        path: ./kustomize/stages/{{path.basename}}
+        targetRevision: stage/{{path.basename}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: kargo-demo-{{path.basename}}
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+
