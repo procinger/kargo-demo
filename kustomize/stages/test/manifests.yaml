@@ -1,9 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: kargo-demo
----
-apiVersion: v1
 kind: Service
 metadata:
   name: kargo-demo
@@ -31,7 +26,7 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.24.1
+      - image: ghcr.io/procinger/kargo-demo:1.25.1
         livenessProbe:
           exec:
             command:
