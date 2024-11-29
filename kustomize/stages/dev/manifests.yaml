@@ -62,7 +62,7 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.16.1
+      - image: ghcr.io/procinger/kargo-demo:1.15.1
         livenessProbe:
           exec:
             command:
@@ -89,3 +89,52 @@ spec:
             memory: 128Mi
       imagePullSecrets:
       - name: gitlab-registry-credentials
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: curl-app
+  name: curl-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl-app
+  template:
+    metadata:
+      labels:
+        app: curl-app
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - |
+          while true
+          do
+            curl --insecure -H "canary: true" -L -o /dev/null -s -w %{http_code} http://kargo-demo
+            sleep 5
+          done
+        image: docker.io/curlimages/curl:8.9.1
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - '[ -f /run/nginx.pid ] && test -f /proc/$(cat /run/nginx.pid)/exe'
+        name: curl-app
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
+            cpu: 200m
+            memory: 128Mi
