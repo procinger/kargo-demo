@@ -82,6 +82,7 @@ After a successful deployment, two freights should have been created. A warehous
 promotion chain is from dev > test > prod
 
 It is important to note here that dev simulates a flaky environment and has a [random fail](./kargo/analysis-random-fail.yaml) in addition to an http
+
 [smoke test](./kargo/analysis-http-smoke-test.yaml). This [Argo rollout analysis template](https://argo-rollouts.readthedocs.io/en/stable/analysis/job/) acts like a coin flip.
 
 ![kargo-demo](https://github.com/user-attachments/assets/da97a810-9187-4cf0-9c5a-a26aea47e2c2)
