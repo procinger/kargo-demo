@@ -25,7 +25,7 @@ spec:
                 - -c
                 - |
                   (curl --insecure -H "canary: true" -L -o /dev/null -s -w %{http_code} \
-                  https://lab.hukmedia.de | grep ${HTTP_SUCCESS_CODE}) || (echo "http test failed. expected ${HTTP_SUCCESS_CODE}"; exit 1)
+                  http://kargo-demo | grep ${HTTP_SUCCESS_CODE}) || (echo "http test failed. expected ${HTTP_SUCCESS_CODE}"; exit 1)
                 env:
                 - name: HTTP_SUCCESS_CODE
                   value: "200"
@@ -62,7 +62,7 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.10.1
+      - image: ghcr.io/procinger/kargo-demo:1.16.1
         livenessProbe:
           exec:
             command:
