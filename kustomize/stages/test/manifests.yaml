@@ -26,7 +26,10 @@ spec:
         app: kargo-demo
     spec:
       containers:
-      - image: ghcr.io/procinger/kargo-demo:1.28.3
+      - env:
+        - name: FOO
+          value: BAZ
+        image: ghcr.io/procinger/kargo-demo:1.28.3
         livenessProbe:
           exec:
             command:
