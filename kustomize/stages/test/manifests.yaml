@@ -29,7 +29,7 @@ spec:
       - env:
         - name: FOO
           value: BAZ
-        image: ghcr.io/procinger/kargo-demo:1.28.3
+        image: ghcr.io/procinger/kargo-demo:1.29.1
         livenessProbe:
           exec:
             command:
