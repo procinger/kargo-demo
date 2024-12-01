@@ -54,5 +54,3 @@ spec:
           requests:
             cpu: 200m
             memory: 128Mi
-      imagePullSecrets:
-      - name: ghcr-pull-secret
