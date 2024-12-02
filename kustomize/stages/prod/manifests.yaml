@@ -29,7 +29,7 @@ spec:
       - env:
         - name: FOO
           value: BAZ
-        image: ghcr.io/procinger/kargo-demo:1.30.3
+        image: ghcr.io/procinger/kargo-demo:1.39.12
         livenessProbe:
           exec:
             command:
@@ -54,5 +54,3 @@ spec:
           requests:
             cpu: 200m
             memory: 128Mi
-      imagePullSecrets:
-      - name: ghcr-pull-secret
